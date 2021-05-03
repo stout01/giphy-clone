@@ -1,7 +1,7 @@
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import './App.css';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import Results from './Results';
-import ImageDetails from './ImageDetails';
+import ImageDetails from './components/ImageDetails';
+import Results from './components/Results';
 
 function App() {
   return (
