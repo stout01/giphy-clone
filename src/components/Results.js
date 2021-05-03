@@ -22,7 +22,7 @@ function Results() {
 
       setTrendingImages(responseImages);
     }
-  }, []);
+  }, [trendingImages]);
 
   useEffect(() => {
     if (debouncedSearchTerm) {
