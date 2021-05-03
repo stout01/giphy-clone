@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import ImageList from './ImageList';
 import useDebounce from '../hooks/useDebounce';
 import './Results.css';
 
 function Results() {
+  const baseUrl = 'https://api.giphy.com/v1/gifs';
   const apiKey = '5Muqe6HOngq40S9xI6ZQJ7jDfvZUoS5f';
   const [searchImages, setSearchImages] = useState([]);
   const [trendingImages, setTrendingImages] = useState([]);
@@ -16,7 +17,7 @@ function Results() {
     }
 
     async function getImages() {
-      const response = await fetch(`https://api.giphy.com/v1/gifs/trending?api_key=${apiKey}`);
+      const response = await fetch(`${baseUrl}/trending?api_key=${apiKey}`);
       const responseData = await response.json();
       const responseImages = mapResponseToImages(responseData);
 
@@ -32,9 +33,7 @@ function Results() {
     }
 
     async function searchImages() {
-      const response = await fetch(
-        `https://api.giphy.com/v1/gifs/search?api_key=${apiKey}&q=${debouncedSearchTerm}`
-      );
+      const response = await fetch(`${baseUrl}/search?api_key=${apiKey}&q=${debouncedSearchTerm}`);
       const responseData = await response.json();
       const responseImages = mapResponseToImages(responseData);
 
@@ -55,21 +54,37 @@ function Results() {
     setSearchTerm(event.target.value);
   }
 
+  function SearchImageResults({ images }) {
+    if (debouncedSearchTerm) {
+      if (searchImages.length > 0) {
+        return <ImageList images={images}></ImageList>;
+      } else {
+        return <div>No Results Found</div>;
+      }
+    }
+
+    return null;
+  }
+
   return (
-    <div>
+    <div className="results-container">
       <div className="image-search">
+        <label>Search: </label>
         <input type="text" value={searchTerm} onChange={searchInputChanged}></input>
       </div>
 
-      <div className="image-container">
-        {(searchImages.length > 0 ? searchImages : trendingImages).map((image) => {
-          return (
-            <Link key={image.id} to={`/image/${image.id}`}>
-              <img alt={image.title} style={{ maxHeight: image.height }} src={image.imageUrl}></img>
-            </Link>
-          );
-        })}
-      </div>
+      <SearchImageResults images={searchImages}></SearchImageResults>
+
+      {searchImages.length === 0 ? <TrendingImages images={trendingImages}></TrendingImages> : null}
+    </div>
+  );
+}
+
+function TrendingImages({ images }) {
+  return (
+    <div>
+      <h1>Trending GIFs</h1>
+      <ImageList images={images}></ImageList>
     </div>
   );
 }
