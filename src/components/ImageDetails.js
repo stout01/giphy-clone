@@ -18,7 +18,7 @@ function ImageDetails() {
 
       setImage(responseImages);
     }
-  }, []);
+  }, [id]);
 
   function mapResponseToImages(responseImage) {
     return {
