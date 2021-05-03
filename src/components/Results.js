@@ -1,11 +1,10 @@
 import { useEffect, useState } from 'react';
 import ImageList from './ImageList';
 import useDebounce from '../hooks/useDebounce';
+import { baseUrl, apiKey } from '../constants';
 import './Results.css';
 
 function Results() {
-  const baseUrl = 'https://api.giphy.com/v1/gifs';
-  const apiKey = '5Muqe6HOngq40S9xI6ZQJ7jDfvZUoS5f';
   const [searchImages, setSearchImages] = useState([]);
   const [trendingImages, setTrendingImages] = useState([]);
   const [searchTerm, setSearchTerm] = useState();

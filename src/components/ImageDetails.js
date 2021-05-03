@@ -1,10 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { apiKey, baseUrl } from '../constants';
 import './ImageDetails.css';
 
 function ImageDetails() {
-  const apiKey = '5Muqe6HOngq40S9xI6ZQJ7jDfvZUoS5f';
-
   const { id } = useParams();
   const [image, setImage] = useState();
 
@@ -12,7 +11,7 @@ function ImageDetails() {
     getImages();
 
     async function getImages() {
-      const response = await fetch(`https://api.giphy.com/v1/gifs/${id}?api_key=${apiKey}`);
+      const response = await fetch(`${baseUrl}/${id}?api_key=${apiKey}`);
       const responseData = await response.json();
       const responseImages = mapResponseToImages(responseData.data);
 
